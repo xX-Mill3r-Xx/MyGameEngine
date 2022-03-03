@@ -12,17 +12,21 @@ namespace GameEngine
     class DemoGame : Express.Gengine
     {
         Sprite2D player;
+        //Sprite2D player2;
 
         bool left, right, up, down;
 
+        Vector2 lastPos = Vector2.Zero();
+
         string[,] Map =
         {
-            {".",".",".",".",".",".","." },
-            {".",".",".",".",".","g","." },
-            {".",".",".",".","g","g","." },
-            {".",".","g","g","g","g","." },
+            {".",".","g","g","g","g","g" },
+            {".",".",".",".",".",".","g" },
+            {"g",".",".",".",".",".","g" },
+            {"g",".",".",".",".",".","g" },
+            {"g",".",".",".",".",".","g" },
+            {"g",".",".",".",".",".","g" },
             {"g","g","g","g","g","g","g" },
-            {".",".",".",".",".",".","." },
         };
 
         public DemoGame() : base(new Vector2(615, 515), "GameEngine Demo") { }
@@ -40,12 +44,13 @@ namespace GameEngine
                 {
                     if(Map[j,i] == "g")
                     {
-                        new Sprite2D(new Vector2(i * 49, j * 49), new Vector2(50, 50), "Tiles/b_tiles/Ground_Areia", "Ground");
+                        new Sprite2D(new Vector2(i * 50, j * 50), new Vector2(50, 50), "Tiles/b_tiles/Ground_Areia", "Ground");
                     }
                 }
             }
 
-            player = new Sprite2D(new Vector2(30,30), new Vector2(30,30), "Players/Player Grey/Player_Idle", "Player");
+            player = new Sprite2D(new Vector2(10,10), new Vector2(30,30), "Players/Player Grey/Player_Idle", "Player");
+            //player2 = new Sprite2D(new Vector2(30, 30), new Vector2(30, 30), "Players/Player Grey/Player_Idle", "Player");
         }
 
         public override void OnDraw()
@@ -53,8 +58,11 @@ namespace GameEngine
 
         }
 
+
         public override void OnUpdate()
         {
+            int Times = 0;
+            Times++;
             if (up)
             {
                 player.Position.Y -= 5f;
@@ -73,6 +81,27 @@ namespace GameEngine
             if (right)
             {
                 player.Position.X += 5f;
+            }
+
+            if(player.IsCollidind("Ground"))
+            {
+                //Log.Info($"Colidindo {Times}");
+                //Times++;
+                player.Position.X = lastPos.Y;
+                player.Position.Y = lastPos.Y;
+            }
+            else
+            {
+                #region Obs.:
+                //if(Times > 10)
+                //{
+                //    lastPos = player.Position;
+                //    Times = 0;
+                //}
+                #endregion
+
+                lastPos.X = player.Position.X;
+                lastPos.Y = player.Position.Y;
             }
         }
 
