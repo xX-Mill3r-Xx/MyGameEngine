@@ -20,13 +20,21 @@ namespace GameEngine
 
         string[,] Map =
         {
-            {".",".","g","g","g","g","g" },
-            {".",".",".",".",".",".","g" },
-            {"g",".",".",".",".",".","g" },
-            {"g",".",".",".",".",".","g" },
-            {"g",".",".",".",".",".","g" },
-            {"g",".",".",".",".",".","g" },
-            {"g","g","g","g","g","g","g" },
+            /*Intro: Tudo que for g é Ground
+             tudo que é c é coletavel no cenario;*/
+
+            {"g","g","g","g","g","g","g","g","g","g","g","g","g","g","g",},
+            {"g",".",".",".",".",".",".",".",".",".",".",".",".",".","g",},
+            {"g",".",".",".",".",".",".",".",".",".",".",".",".",".","g",},
+            {"g",".",".",".",".",".",".",".",".",".",".",".",".",".","g",},
+            {"g",".",".",".",".",".",".",".",".",".",".",".",".",".","g",},
+            {"g",".",".",".",".",".",".","p",".",".",".",".",".",".","g",},
+            {"g",".",".",".",".",".",".",".",".",".",".",".",".",".","g",},
+            {"g",".",".",".",".",".",".",".",".",".",".",".",".",".","g",},
+            {"g",".",".",".",".",".",".",".",".",".",".",".",".",".","g",},
+            {"g",".",".",".",".",".",".",".",".",".",".",".",".",".","g",},
+            {"g",".",".",".",".",".",".",".",".",".",".",".",".",".","g",},
+            {"g","g","g","g","g","g","g","g","g","g","g","g","g","g","g",},
         };
 
         public DemoGame() : base(new Vector2(615, 515), "GameEngine Demo") { }
@@ -34,23 +42,43 @@ namespace GameEngine
         public override void OnLoad()
         {
             BGcolor = Color.Black;
+            CameraZoom = new Vector2(.8f, .8f);
+            Sprite2D groundRef = new Sprite2D("Tiles/b_tiles/Ground_Areia");
+            Sprite2D CoinRef = new Sprite2D("Tiles/c_tiles/colectc");
 
             //player = new Shape2D(new Vector2(10, 10), new Vector2(10, 10), "Teste");
             //player = new Sprite2D(new Vector2(10, 10), new Vector2(30, 30), "Players/Player Grey/Player_Idle", "Player");
 
-            for(int i = 0; i < Map.GetLength(1); i++)
+            for (int i = 0; i < Map.GetLength(1); i++)
             {
                 for (int j = 0; j < Map.GetLength(0); j++)
                 {
                     if(Map[j,i] == "g")
                     {
-                        new Sprite2D(new Vector2(i * 50, j * 50), new Vector2(50, 50), "Tiles/b_tiles/Ground_Areia", "Ground");
+                        new Sprite2D(new Vector2(i * 50f, j * 50f), new Vector2(50, 50), groundRef, "Ground");
+                    }
+
+                    if (Map[j, i] == "c")
+                    {
+                        new Sprite2D(new Vector2(i * 50f, j * 50f), new Vector2(20, 20), CoinRef, "Coin");
+                    }
+
+                    if (Map[j, i] == "p")
+                    {
+                        player = new Sprite2D(new Vector2(i * 50f, j * 50f), new Vector2(30, 30), "Players/Player Grey/Player_Idle", "Player");
                     }
                 }
             }
 
-            player = new Sprite2D(new Vector2(10,10), new Vector2(30,30), "Players/Player Grey/Player_Idle", "Player");
-            //player2 = new Sprite2D(new Vector2(30, 30), new Vector2(30, 30), "Players/Player Grey/Player_Idle", "Player");
+
+
+            #region Descrição para add Player
+            //player = new Sprite2D(new Vector2(Start Player position X, Start Player position Y), new Vector2(Tamanho X, Tamanho Y), "Pasta/SubPasta/Nome Sprite", "Tag");
+            #endregion
+
+            //Add o - Camera.Position; Caso de algum bug, retirar;
+            //player = new Sprite2D(new Vector2(100 - CameraPosition.X,100 - CameraPosition.Y), new Vector2(30,30), "Players/Player Grey/Player_Idle", "Player");
+           
         }
 
         public override void OnDraw()
@@ -63,6 +91,9 @@ namespace GameEngine
         {
             int Times = 0;
             Times++;
+
+            if (player == null)
+                return;
             if (up)
             {
                 player.Position.Y -= 5f;
@@ -83,11 +114,17 @@ namespace GameEngine
                 player.Position.X += 5f;
             }
 
-            if(player.IsCollidind("Ground"))
+            Sprite2D coin = player.IsCollidind("Coin");
+            if(coin != null)
+            {
+                coin.DestroySelf();
+            }
+
+            if(player.IsCollidind("Ground") != null)
             {
                 //Log.Info($"Colidindo {Times}");
                 //Times++;
-                player.Position.X = lastPos.Y;
+                player.Position.X = lastPos.X;
                 player.Position.Y = lastPos.Y;
             }
             else
