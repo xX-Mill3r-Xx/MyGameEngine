@@ -51,6 +51,9 @@
     <Compile Include="Express\Gengine.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Express\Log.cs" />
+    <Compile Include="Express\Shape2D.cs" />
+    <Compile Include="Express\Sprite2D.cs" />
     <Compile Include="Express\Vector2.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
