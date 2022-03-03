@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿using System.Drawing;
 using GameEngine.Express;
 using System.Windows.Forms;
 
@@ -11,13 +6,14 @@ namespace GameEngine
 {
     class DemoGame : Express.Gengine
     {
+        #region Atributos
         Sprite2D player;
         //Sprite2D player2;
-
         bool left, right, up, down;
-
         Vector2 lastPos = Vector2.Zero();
+        #endregion
 
+        #region Matriz que constroi o mapa
         string[,] Map =
         {
             /*Intro: Tudo que for g é Ground
@@ -36,18 +32,26 @@ namespace GameEngine
             {"g",".",".",".",".",".",".",".",".",".",".",".",".",".","g",},
             {"g","g","g","g","g","g","g","g","g","g","g","g","g","g","g",},
         };
+        #endregion
 
-        public DemoGame() : base(new Vector2(615, 515), "GameEngine Demo") { }
+        #region Tamanho do Mapa Game
+        //Aqui setamos os valores para o tamanho total do mapa;
+        public DemoGame() : base(new Vector2(616, 526), "GameEngine Demo") { }
+        #endregion
 
         public override void OnLoad()
         {
+            #region Atributos
             BGcolor = Color.Black;
             CameraZoom = new Vector2(.8f, .8f);
             Sprite2D groundRef = new Sprite2D("Tiles/b_tiles/Ground_Areia");
             Sprite2D CoinRef = new Sprite2D("Tiles/c_tiles/colectc");
+            #endregion
 
+            #region Obsoleto
             //player = new Shape2D(new Vector2(10, 10), new Vector2(10, 10), "Teste");
             //player = new Sprite2D(new Vector2(10, 10), new Vector2(30, 30), "Players/Player Grey/Player_Idle", "Player");
+            #endregion
 
             for (int i = 0; i < Map.GetLength(1); i++)
             {
@@ -70,15 +74,14 @@ namespace GameEngine
                 }
             }
 
-
-
             #region Descrição para add Player
             //player = new Sprite2D(new Vector2(Start Player position X, Start Player position Y), new Vector2(Tamanho X, Tamanho Y), "Pasta/SubPasta/Nome Sprite", "Tag");
             #endregion
 
+            #region Obsoleto
             //Add o - Camera.Position; Caso de algum bug, retirar;
             //player = new Sprite2D(new Vector2(100 - CameraPosition.X,100 - CameraPosition.Y), new Vector2(30,30), "Players/Player Grey/Player_Idle", "Player");
-           
+            #endregion
         }
 
         public override void OnDraw()
